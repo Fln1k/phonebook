@@ -1,0 +1,18 @@
+<% if user_signed_in? %>
+<table width="100%", style="font-size: 20px;">
+  <% @contacts.each do |contact| %>
+    <tr>
+      <td width="30%"><%= contact.name %></td>
+      <td width="30%"><%= contact.number %></td>
+      <td width="20%"><%= link_to 'Edit', edit_contact_path(contact) %></td>
+      <td width="20%">
+        <%= link_to 'Destroy', contact_path(contact),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% else %>
+Please sign in to manage your phonebook
+<% end %>

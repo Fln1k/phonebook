@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root to: 'users#index'
+  root to: 'contacts#index'
   devise_for :users
   resources :users
+  resources :contacts
 end
