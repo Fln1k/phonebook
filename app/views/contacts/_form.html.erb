@@ -1,3 +1,15 @@
+<% if !@contact.errors.empty? %>
+  <div class = "alert alert-error">
+
+    <ul>
+      <% @contact.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+
+  </div>
+<% end %>
+
 <%= form_with model: @contact, local: true do |form| %>
   <p>
     <%= form.label :name %><br>
