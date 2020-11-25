@@ -48,16 +48,20 @@ class ContactsController < ApplicationController
 
   def update_via_file
     @updated_info = File.read(params["file"]["attachment"].path.to_s).split("\n")
-    ActiveRecord::Base.transaction do
-      Contact.where(:user_id => current_user.id).destroy_all
-      @updated_info.each { |message|
-        message = message.split(",")
-        current_user.contacts.new(:name => message[0], :number => message[1].gsub(" ","")).save
-      }
+    begin
+      ActiveRecord::Base.transaction do
+        Contact.where(:user_id => current_user.id).destroy_all
+        @updated_info.each { |message|
+          message = message.split(",")
+          current_user.contacts.new(:name => message[0], :number => message[1].gsub(" ","")).save!
+        }
+      end
+      flash[:notice] = "Successfully updated contacts!"
+      redirect_to root_path
+    rescue ActiveRecord::RecordInvalid => invalid
+      flash[:error] = "Please check your file"
+      redirect_to root_path
     end
-
-    flash[:notice] = "Successfully updated contacts!"
-    redirect_to root_path
   end
 
 
