@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
   <li><%= link_to 'New contact', new_contact_path %></li>
-  <li><a class="navbar-brand" onclick='request_user_contacts()'>Download phonebook</a></li>
+  <li><a class="navbar-brand" href="" onclick='request_user_contacts()'>Download phonebook</a></li>
   <li><%= link_to 'Edit account', edit_user_registration_path %></li>
   <li><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
 <% else %>
