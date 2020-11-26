@@ -16,7 +16,7 @@
   </table>
   <%= form_for :file, url: "/contacts/update_via_file", method: :put, local: true do |form| %>
     You can also update your phonebook via file
-    <%= form.file_field :attachment %>
+    <%= form.file_field :attachment, accept: "text/plain" %>
     <p>
       <%= form.submit %>
     </p>
