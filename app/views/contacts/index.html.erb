@@ -1,25 +1,60 @@
 <% if user_signed_in? %>
-<table width="100%", style="font-size: 20px;">
-  <% @contacts.each do |contact| %>
-    <tr>
-      <td width="30%"><%= contact.name %></td>
-      <td width="30%"><%= contact.number %></td>
-      <td width="20%"><%= link_to 'Edit', edit_contact_path(contact) %></td>
-      <td width="20%">
-        <%= link_to 'Destroy', contact_path(contact),
-                          method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
-      </td>
-    </tr>
-  <% end %>
-</table>
-  <%= form_for :file, url: "/contact/update_via_file", method: :put, local: true do |form| %>
-You can also update your phonebook via file
+
+  <table width="100%", style="font-size: 20px;">
+    <% @contacts.each do |contact| %>
+      <tr>
+        <td width="30%"><%= contact.name %></td>
+        <td width="30%"><%= contact.number %></td>
+        <td width="20%"><%= link_to 'Edit', edit_contact_path(contact) %></td>
+        <td width="20%">
+          <%= link_to 'Destroy', contact_path(contact),
+                            method: :delete,
+                            data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= form_for :file, url: "/contacts/update_via_file", method: :put, local: true do |form| %>
+    You can also update your phonebook via file
     <%= form.file_field :attachment %>
     <p>
       <%= form.submit %>
     </p>
   <% end %>
+
+  <script type="text/javascript">
+    function request_user_contacts(){
+     $.ajax({
+              url: '<%= user_contacts_path %>',
+              type: "GET",
+              dataType: "text",
+              async: true,
+              success: function (data){
+                  download_txt_phonebook(data)
+              },
+              error: function (data) {
+                   alert("there is something wrong, please try again later");
+              }
+        }); 
+    }
+
+    function download_txt_phonebook(text){
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', '<%=current_user.email%>_phonebook.txt');
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    }
+
+  </script>
+
 <% else %>
-Please sign in to manage your phonebook
+
+  Please sign in to manage your phonebook
+
 <% end %>

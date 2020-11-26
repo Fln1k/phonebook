@@ -12,4 +12,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def contacts
+    @contacts = ""
+    current_user.contacts.each{|contact|
+      @contacts+="#{contact.name},#{contact.number}\n"
+    }
+    render json: @contacts, status: 200
+  end
+
 end
